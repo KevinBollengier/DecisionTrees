@@ -1,2 +1,3 @@
 #!/bin/sh
+pip install liac-arff
 python3 Main.py
