@@ -62,6 +62,14 @@ def calc_entropy(attribute: list)->float:
 
 
 def calc_inf_gain():
+    """
+    Function to calculate the information gain
+    :return:
+    """
+    pass
+
+
+def id3():
     pass
 
 
