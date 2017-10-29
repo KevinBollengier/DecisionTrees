@@ -2,12 +2,15 @@
 import arff
 import fileinput
 import Dataset
+import math
 
 
 def main():
     data_set = parse_arff()
-    print(get_data(data_set))
-    pass
+    # print(get_attributes(data_set))
+    attributes = get_attributes(data_set)
+    entropy = calc_entropy(attributes[0][1])
+    print(entropy)
 
 
 def parse_arff()->dict:
@@ -27,7 +30,7 @@ def get_attributes(dataset: dict)->list:
     """
     Function that get the attributes from a parsed arff dataset and which returns the attributes with their vallues
     :param dataset: The dataset which is parsed as dict
-    :return: The attribute values returned as key value list
+    :return: The attribute values returned as a list of tuples
     """
     attribute_values = dataset["attributes"]
     return attribute_values
@@ -43,12 +46,19 @@ def get_data(dataset: dict)->list:
     return data_values
 
 
-def make_dec_tree(data: list, attributes: list, data_attributes: list):
-    pass
-
-
-def calc_entropy():
-    pass
+def calc_entropy(attribute: list)->float:
+    """
+    Function that calculates the entropy of a given attribute
+    :param attribute: Index of listitem and tuple which gives a list of values of that specific attribute
+    :return: The entropy as float.
+    """
+    amount_value = {}
+    for value in attribute:
+        amount_value[value] = amount_value.get(value, 0) + 1
+    result = 0
+    for key, value in amount_value.items():
+        result -= value/len(attribute) * math.log(value/len(attribute), 2)
+    return result
 
 
 def calc_inf_gain():
