@@ -61,11 +61,15 @@ def calc_entropy(attribute: list)->float:
     return result
 
 
-def calc_inf_gain():
+def calc_inf_gain(data: list, entropy: float, attribute: list)->float:
     """
-    Function to calculate the information gain
-    :return:
+    Function which calculates the information gain given the data and attributes
+    :param data: The data received from the get_data function
+    :param entropy: The entropy received from calc_entropy
+    :param attribute: Index of listitem and tuple which gives the list of values for that specific attribute
+    :return: The information gain as float value.
     """
+    new_entropy = entropy
     pass
 
 
