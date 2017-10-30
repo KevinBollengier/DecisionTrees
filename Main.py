@@ -10,7 +10,8 @@ def main():
     # print(get_attributes(data_set))
     attributes = get_attributes(data_set)
     entropy = calc_entropy(attributes[0][1])
-    print(entropy)
+    information_gain = calc_inf_gain(get_data(data_set), entropy, attributes[0])
+    print(information_gain)
 
 
 def parse_arff()->dict:
@@ -61,16 +62,26 @@ def calc_entropy(attribute: list)->float:
     return result
 
 
-def calc_inf_gain(data: list, entropy: float, attribute: list)->float:
+def calc_inf_gain(dataset: list, entropy: float, attribute: list)->float:
     """
     Function which calculates the information gain given the data and attributes
-    :param data: The data received from the get_data function
+    :param dataset: The data received from the get_data function
     :param entropy: The entropy received from calc_entropy
     :param attribute: Index of listitem and tuple which gives the list of values for that specific attribute
     :return: The information gain as float value.
     """
-    new_entropy = entropy
-    pass
+    infogain = entropy
+    dict_list = []
+    for record in dataset:
+        val_freq = {}
+        for value in record:
+            val_freq[value] = val_freq.get(value, 0) + 1
+        dict_list.append(val_freq)
+    for dictionary in dict_list:
+        for key, value in dictionary.items():
+            # TODO: waiting on feedback to see if my quiz was correct
+            # infogain -= value / len(dict_list) *
+    return infogain
 
 
 def id3():
