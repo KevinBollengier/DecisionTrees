@@ -80,7 +80,7 @@ def calc_inf_gain(dataset: list, entropy: float, attribute: list)->float:
     for dictionary in dict_list:
         for key, value in dictionary.items():
             # TODO: waiting on feedback to see if my quiz was correct
-            # infogain -= value / len(dict_list) *
+            infogain -= int(value) / len(dict_list) * (int(value)/len(dict_list) * math.log(int(value)/len(dict_list), 2))
     return infogain
 
 
