@@ -10,7 +10,7 @@ def main():
     # print(get_attributes(data_set))
     attributes = get_attributes(data_set)
     entropy = calc_entropy(attributes[0][1])
-    information_gain = calc_inf_gain(get_data(data_set), entropy, attributes[0])
+    information_gain = calc_inf_gain(get_data(data_set), entropy)
     print(information_gain)
 
 
@@ -62,12 +62,11 @@ def calc_entropy(attribute: list)->float:
     return result
 
 
-def calc_inf_gain(dataset: list, entropy: float, attribute: list)->float:
+def calc_inf_gain(dataset: list, entropy: float)->float:
     """
     Function which calculates the information gain given the data and attributes
     :param dataset: The data received from the get_data function
     :param entropy: The entropy received from calc_entropy
-    :param attribute: Index of listitem and tuple which gives the list of values for that specific attribute
     :return: The information gain as float value.
     """
     infogain = entropy
@@ -78,9 +77,11 @@ def calc_inf_gain(dataset: list, entropy: float, attribute: list)->float:
             val_freq[value] = val_freq.get(value, 0) + 1
         dict_list.append(val_freq)
     for dictionary in dict_list:
+        print(dictionary)
         for key, value in dictionary.items():
+            # print(key, value)
             # TODO: waiting on feedback to see if my quiz was correct
-            infogain -= int(value) / len(dict_list) * (int(value)/len(dict_list) * math.log(int(value)/len(dict_list), 2))
+            infogain -= int(value) / len(record) * (int(value)/len(record) * math.log(int(value)/len(record), 2))
     return infogain
 
 
