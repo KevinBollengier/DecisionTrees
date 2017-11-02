@@ -7,11 +7,12 @@ import math
 
 def main():
     data_set = parse_arff()
-    # print(get_attributes(data_set))
+    data = get_data(data_set)
+    last_column_data = [row[-1] for row in data]
+    entropy = calc_entropy(last_column_data)
     attributes = get_attributes(data_set)
-    entropy = calc_entropy(attributes[0][1])
-    information_gain = calc_inf_gain(get_data(data_set), entropy)
-    print(information_gain)
+    infogain = calc_inf_gain(attributes[1], entropy)
+    print(infogain)
 
 
 def parse_arff()->dict:
@@ -37,52 +38,49 @@ def get_attributes(dataset: dict)->list:
     return attribute_values
 
 
-def get_data(dataset: dict)->list:
+def get_data(dataset_lastcolumn: dict)->list:
     """
     Function that gets the data from a parsed arff dataset and returns the data
-    :param dataset: The dataset which is parsed as dict.
+    :param dataset_lastcolumn: The dataset which is parsed as dict.
     :return: The data values returned as multidimensional list
     """
-    data_values = dataset["data"]
+    data_values = dataset_lastcolumn["data"]
     return data_values
 
 
-def calc_entropy(attribute: list)->float:
+def calc_entropy(dataset: list)->float:
     """
     Function that calculates the entropy of a given attribute
-    :param attribute: Index of listitem and tuple which gives a list of values of that specific attribute
+    :param dataset: Index of listitem and tuple which gives a list of values of that specific attribute
     :return: The entropy as float.
     """
     amount_value = {}
-    for value in attribute:
+    for value in dataset:
         amount_value[value] = amount_value.get(value, 0) + 1
     result = 0
     for key, value in amount_value.items():
-        result -= value/len(attribute) * math.log(value/len(attribute), 2)
+        result -= value/len(dataset) * math.log(value / len(dataset), 2)
     return result
 
 
-def calc_inf_gain(dataset: list, entropy: float)->float:
+def calc_inf_gain(attribute: list, entropy: float)->float:
     """
     Function which calculates the information gain given the data and attributes
-    :param dataset: The data received from the get_data function
-    :param entropy: The entropy received from calc_entropy
+    :param attribute: List containing the attribute values
+    :param entropy: Entropy calculated on the dataset
     :return: The information gain as float value.
     """
     infogain = entropy
-    dict_list = []
-    for record in dataset:
-        val_freq = {}
-        for value in record:
-            val_freq[value] = val_freq.get(value, 0) + 1
-        dict_list.append(val_freq)
-    for dictionary in dict_list:
-        print(dictionary)
-        for key, value in dictionary.items():
-            # print(key, value)
-            # TODO: waiting on feedback to see if my quiz was correct
-            infogain -= int(value) / len(record) * (int(value)/len(record) * math.log(int(value)/len(record), 2))
+    attr_freq = {}
+    for value in attribute[1]:
+        attr_freq[value] = attr_freq.get(value, 0) + 1
+    for key, value in attr_freq.items():
+        infogain -= (value / len(attribute[1]) * math.log(value / len(attribute[1]), 2)) * entropy
     return infogain
+
+
+def split_attr(dataset, attributes,):
+    pass
 
 
 def id3():
