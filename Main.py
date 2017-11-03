@@ -11,7 +11,8 @@ def main():
     last_column_data = [row[-1] for row in data]
     entropy = calc_entropy(last_column_data)
     attributes = get_attributes(data_set)
-    infogain = calc_inf_gain(attributes[1], entropy)
+    infogain = calc_inf_gain(attributes[2], entropy)
+    print(entropy)
     print(infogain)
 
 
