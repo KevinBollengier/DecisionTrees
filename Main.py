@@ -1,4 +1,6 @@
 # Lab about decision trees made by Kevin Bollengier
+from typing import List, Tuple
+
 import arff
 import fileinput
 import Dataset
@@ -12,7 +14,8 @@ def main():
     entropy = calc_entropy(last_column_data)
     attributes = get_attributes(data_set)
     best_attr = get_highest_ig(data, entropy, attributes)
-    print(best_attr)
+    split = split_attr(data, best_attr, attributes.index(best_attr))
+    print(split)
 
 
 def parse_arff()->dict:
@@ -94,8 +97,15 @@ def get_highest_ig(dataset: list, entropy: float, attributes: list)->tuple:
     return attributes[max(info_gain_per_attr.keys())]
 
 
-def split_attr(dataset, attributes,):
-    pass
+def split_attr(dataset: List[str], best_attribute: Tuple[str, List[str]], index: int)->List[List[str]]:
+    splitted_sets = []
+    for value in best_attribute[1]:
+        filter_rows = []
+        for row in dataset:
+            if row[index] == value:
+                filter_rows.append(row)
+        splitted_sets.append(filter_rows)
+    return splitted_sets
 
 
 def id3():
