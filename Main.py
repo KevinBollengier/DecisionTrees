@@ -11,9 +11,8 @@ def main():
     last_column_data = [row[-1] for row in data]
     entropy = calc_entropy(last_column_data)
     attributes = get_attributes(data_set)
-    infogain = calc_inf_gain(data, attributes[4], entropy, 4)
-    print(entropy)
-    print(infogain)
+    best_attr = get_highest_ig(data, entropy, attributes)
+    print(best_attr)
 
 
 def parse_arff()->dict:
@@ -42,6 +41,7 @@ def get_attributes(dataset: dict)->list:
 def get_data(dataset_lastcolumn: dict)->list:
     """
     Function that gets the data from a parsed arff dataset and returns the data
+    :rtype: list
     :param dataset_lastcolumn: The dataset which is parsed as dict.
     :return: The data values returned as multidimensional list
     """
@@ -78,6 +78,20 @@ def calc_inf_gain(dataset: list, attribute: list, entropy: float, index: int)->f
         data_sub_set = [row[-1] for row in dataset if row[index] == value]
         infogain -= (len(data_sub_set) / len(dataset) * calc_entropy(data_sub_set))
     return infogain
+
+
+def get_highest_ig(dataset: list, entropy: float, attributes: list)->tuple:
+    """
+    Function that returns the name of the best attribute to split on
+    :param dataset: The dataset
+    :param entropy: The entropy of the dataset
+    :param attributes: List of tuples containing the attributes
+    :return: Tuple of the best attribute
+    """
+    info_gain_per_attr = {}
+    for attr in range(len(dataset[0]) - 1):
+        info_gain_per_attr[attr] = calc_inf_gain(dataset, attributes[attr], entropy, attr)
+    return attributes[max(info_gain_per_attr.keys())]
 
 
 def split_attr(dataset, attributes,):
