@@ -11,7 +11,7 @@ def main():
     last_column_data = [row[-1] for row in data]
     entropy = calc_entropy(last_column_data)
     attributes = get_attributes(data_set)
-    infogain = calc_inf_gain(attributes[2], entropy)
+    infogain = calc_inf_gain(data, attributes[4], entropy, 4)
     print(entropy)
     print(infogain)
 
@@ -64,19 +64,19 @@ def calc_entropy(dataset: list)->float:
     return result
 
 
-def calc_inf_gain(attribute: list, entropy: float)->float:
+def calc_inf_gain(dataset: list, attribute: list, entropy: float, index: int)->float:
     """
     Function which calculates the information gain given the data and attributes
+    :param index: Column
+    :param dataset: The dataset
     :param attribute: List containing the attribute values
     :param entropy: Entropy calculated on the dataset
     :return: The information gain as float value.
     """
     infogain = entropy
-    attr_freq = {}
     for value in attribute[1]:
-        attr_freq[value] = attr_freq.get(value, 0) + 1
-    for key, value in attr_freq.items():
-        infogain -= (value / len(attribute[1]) * math.log(value / len(attribute[1]), 2)) * entropy
+        data_sub_set = [row[-1] for row in dataset if row[index] == value]
+        infogain -= (len(data_sub_set) / len(dataset) * calc_entropy(data_sub_set))
     return infogain
 
 
