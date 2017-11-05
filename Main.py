@@ -10,12 +10,8 @@ import math
 def main():
     data_set = parse_arff()
     data = get_data(data_set)
-    last_column_data = [row[-1] for row in data]
-    entropy = calc_entropy(last_column_data)
     attributes = get_attributes(data_set)
-    best_attr = get_highest_ig(data, entropy, attributes)
-    split = split_attr(data, best_attr, attributes.index(best_attr))
-    print(split)
+    id3(data, attributes, -1)
 
 
 def parse_arff()->dict:
@@ -83,7 +79,7 @@ def calc_inf_gain(dataset: list, attribute: list, entropy: float, index: int)->f
     return infogain
 
 
-def get_highest_ig(dataset: list, entropy: float, attributes: list)->tuple:
+def get_highest_ig(dataset: list, entropy: float, attributes: list)->Tuple[str, List[str]]:
     """
     Function that returns the name of the best attribute to split on
     :param dataset: The dataset
@@ -108,8 +104,12 @@ def split_attr(dataset: List[str], best_attribute: Tuple[str, List[str]], index:
     return splitted_sets
 
 
-def id3():
-    pass
+def id3(dataset, attributes, tree_depth):
+    tree_depth += 1
+    entropy = calc_entropy([row[i] for row in dataset for i in range(len(row)) if i == len(attributes)-1])
+    best_attribute = get_highest_ig(dataset, entropy, attributes)
+    subsets = split_attr(dataset, best_attribute, attributes.index(best_attribute))
+    # TODO: print the tree
 
 
 if __name__ == '__main__':
